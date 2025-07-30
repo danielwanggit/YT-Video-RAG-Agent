@@ -1,0 +1,659 @@
+{
+  "name": "My workflow 2",
+  "nodes": [
+    {
+      "parameters": {
+        "command": "=yt_search.py \"{{ $json[\"What is your question?\"] }}\" \"{{ $json[\"How many videos do you want to search?\"] }}\" "
+      },
+      "type": "n8n-nodes-base.executeCommand",
+      "typeVersion": 1,
+      "position": [
+        416,
+        -240
+      ],
+      "id": "06ab2cf6-3509-4513-b0e9-c213503ecda7",
+      "name": "Execute Command",
+      "executeOnce": true,
+      "alwaysOutputData": true
+    },
+    {
+      "parameters": {
+        "jsCode": "// Parse the JSON string in stdout\nconst raw = items[0].json.stdout;\nconst videoList = JSON.parse(raw);\n\n// Map each video as an item to return\nreturn videoList.map(video => ({\n  json: video\n}));"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        624,
+        -240
+      ],
+      "id": "104e60d7-f2c0-4063-94b3-518d86437b72",
+      "name": "Code"
+    },
+    {
+      "parameters": {
+        "fieldToSplitOut": "id",
+        "include": "allOtherFields",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitOut",
+      "typeVersion": 1,
+      "position": [
+        848,
+        -240
+      ],
+      "id": "397482aa-14b2-4930-abfd-0482c3517140",
+      "name": "Split Out"
+    },
+    {
+      "parameters": {
+        "command": "=sh -c 'video_id=\"{{$json[\"id\"]}}\"; pipx run youtube_transcript_api \"$video_id\" | python3 -c \"import ast, sys; print(\\\" \\\".join([entry[\\\"text\\\"] for entry in ast.literal_eval(sys.stdin.read())[0]]))\"'\n"
+      },
+      "type": "n8n-nodes-base.executeCommand",
+      "typeVersion": 1,
+      "position": [
+        1280,
+        -176
+      ],
+      "id": "e45c8b5d-011a-4756-aeb8-64bb4e481a57",
+      "name": "Execute Command1"
+    },
+    {
+      "parameters": {
+        "batchSize": "={{ 1 }}",
+        "options": {
+          "reset": false
+        }
+      },
+      "type": "n8n-nodes-base.splitInBatches",
+      "typeVersion": 3,
+      "position": [
+        1056,
+        -240
+      ],
+      "id": "3237654a-d749-4520-a073-dc6c229c6784",
+      "name": "Loop Over Items"
+    },
+    {
+      "parameters": {
+        "jsCode": "return items.map(item => {\n  return {\n    json: {\n      transcript: item.json.stdout\n    }\n  };\n});"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1424,
+        -176
+      ],
+      "id": "b7053912-736b-4add-8195-1276b07a8936",
+      "name": "Code1"
+    },
+    {
+      "parameters": {
+        "formTitle": "Search Youtube",
+        "formDescription": "Enter a question and the AI will search and summarize the top youtube videos on this topic",
+        "formFields": {
+          "values": [
+            {
+              "fieldLabel": "What is your question?",
+              "requiredField": true
+            },
+            {
+              "fieldLabel": "How many videos do you want to search?",
+              "fieldType": "number",
+              "requiredField": true
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.formTrigger",
+      "typeVersion": 2.2,
+      "position": [
+        208,
+        -240
+      ],
+      "id": "a9311981-ddad-490f-b3a0-027645edb160",
+      "name": "On form submission",
+      "webhookId": "b29bcd38-919b-47a3-8849-add803493736"
+    },
+    {
+      "parameters": {
+        "operation": "upsert",
+        "base": {
+          "__rl": true,
+          "value": "appur5SluArh15fxs",
+          "mode": "list",
+          "cachedResultName": "yt-db",
+          "cachedResultUrl": "https://airtable.com/appur5SluArh15fxs"
+        },
+        "table": {
+          "__rl": true,
+          "value": "tblXLSh1lS0ZtlVwP",
+          "mode": "list",
+          "cachedResultName": "Youtube Videos",
+          "cachedResultUrl": "https://airtable.com/appur5SluArh15fxs/tblXLSh1lS0ZtlVwP"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Video Name": "={{ $json.title }}",
+            "Uploader": "={{ $json.uploader }}",
+            "Video URL": "={{ $json.url }}"
+          },
+          "matchingColumns": [
+            "Video Name"
+          ],
+          "schema": [
+            {
+              "id": "id",
+              "displayName": "id",
+              "required": false,
+              "defaultMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": true,
+              "removed": true
+            },
+            {
+              "id": "Video Name",
+              "displayName": "Video Name",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "transcript",
+              "displayName": "transcript",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Video URL",
+              "displayName": "Video URL",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Uploader",
+              "displayName": "Uploader",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Stage",
+              "displayName": "Stage",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "options",
+              "options": [
+                {
+                  "name": "Transcript Complete",
+                  "value": "Transcript Complete"
+                },
+                {
+                  "name": "Vectorized",
+                  "value": "Vectorized"
+                }
+              ],
+              "readOnly": false,
+              "removed": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.airtable",
+      "typeVersion": 2.1,
+      "position": [
+        1376,
+        -352
+      ],
+      "id": "0e6c5a68-909c-4e0e-bc29-fd23ef459c54",
+      "name": "Create or update a record",
+      "credentials": {
+        "airtableTokenApi": {
+          "id": "yzFufZcDnygd3Sv5",
+          "name": "Airtable Personal Access Token account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "base": {
+          "__rl": true,
+          "value": "appur5SluArh15fxs",
+          "mode": "list",
+          "cachedResultName": "yt-db",
+          "cachedResultUrl": "https://airtable.com/appur5SluArh15fxs"
+        },
+        "table": {
+          "__rl": true,
+          "value": "tblXLSh1lS0ZtlVwP",
+          "mode": "list",
+          "cachedResultName": "Youtube Videos",
+          "cachedResultUrl": "https://airtable.com/appur5SluArh15fxs/tblXLSh1lS0ZtlVwP"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Video URL": "={{ $json.fields['Video URL'] }}",
+            "transcript": "={{ $json.transcript }}",
+            "Stage": "Transcript Complete"
+          },
+          "matchingColumns": [
+            "Video URL"
+          ],
+          "schema": [
+            {
+              "id": "id",
+              "displayName": "id",
+              "required": false,
+              "defaultMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": true,
+              "removed": true
+            },
+            {
+              "id": "Video Name",
+              "displayName": "Video Name",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "transcript",
+              "displayName": "transcript",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Video URL",
+              "displayName": "Video URL",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Uploader",
+              "displayName": "Uploader",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Stage",
+              "displayName": "Stage",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "options",
+              "options": [
+                {
+                  "name": "Transcript Complete",
+                  "value": "Transcript Complete"
+                },
+                {
+                  "name": "Vectorized",
+                  "value": "Vectorized"
+                }
+              ],
+              "readOnly": false,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.airtable",
+      "typeVersion": 2.1,
+      "position": [
+        1888,
+        -208
+      ],
+      "id": "aac4dee1-a947-4880-8b4a-c2dbfd2395e7",
+      "name": "Update record1",
+      "credentials": {
+        "airtableTokenApi": {
+          "id": "yzFufZcDnygd3Sv5",
+          "name": "Airtable Personal Access Token account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "mode": "combine",
+        "combineBy": "combineByPosition",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3.2,
+      "position": [
+        1600,
+        -240
+      ],
+      "id": "da4727be-bccc-4741-9b9a-8d14bfad34b6",
+      "name": "Merge"
+    },
+    {
+      "parameters": {
+        "content": "## Step 1\nForm: submit question and # of vids to search\n",
+        "height": 320,
+        "width": 192
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        160,
+        -352
+      ],
+      "id": "f8933dfc-68c3-4bf7-a9cd-3efe2c257518",
+      "name": "Sticky Note"
+    },
+    {
+      "parameters": {
+        "content": "## Step 2\n",
+        "height": 400,
+        "width": 192
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        368,
+        -432
+      ],
+      "id": "d2721550-edad-42ad-a337-fc4dbf11f16c",
+      "name": "Sticky Note1"
+    },
+    {
+      "parameters": {
+        "resource": "base",
+        "operation": "getSchema",
+        "base": {
+          "__rl": true,
+          "value": "appur5SluArh15fxs",
+          "mode": "list",
+          "cachedResultName": "yt-db",
+          "cachedResultUrl": "https://airtable.com/appur5SluArh15fxs"
+        }
+      },
+      "type": "n8n-nodes-base.airtable",
+      "typeVersion": 2.1,
+      "position": [
+        640,
+        272
+      ],
+      "id": "d7690aab-9b60-4272-a360-ebdd8fb192d7",
+      "name": "Get base schema",
+      "credentials": {
+        "airtableTokenApi": {
+          "id": "yzFufZcDnygd3Sv5",
+          "name": "Airtable Personal Access Token account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "mode": "insert",
+        "pineconeIndex": {
+          "__rl": true,
+          "value": "yt-db",
+          "mode": "list",
+          "cachedResultName": "yt-db"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.vectorStorePinecone",
+      "typeVersion": 1.3,
+      "position": [
+        1712,
+        128
+      ],
+      "id": "13632672-a5a1-4a80-a93a-4fec2a3c0a9c",
+      "name": "Pinecone Vector Store",
+      "credentials": {
+        "pineconeApi": {
+          "id": "NiamWEHoAZazPkYN",
+          "name": "PineconeApi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsonMode": "expressionData",
+        "jsonData": "={{ $json.transcript }}",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.documentDefaultDataLoader",
+      "typeVersion": 1.1,
+      "position": [
+        1888,
+        352
+      ],
+      "id": "a89d4506-5e35-46f9-a635-5dd59a5bb406",
+      "name": "Default Data Loader1"
+    },
+    {
+      "parameters": {},
+      "type": "@n8n/n8n-nodes-langchain.embeddingsOllama",
+      "typeVersion": 1,
+      "position": [
+        1600,
+        320
+      ],
+      "id": "8d56f0ec-ea94-4ebb-aaa0-bd9c3bb19b2f",
+      "name": "Embeddings Ollama"
+    }
+  ],
+  "pinData": {
+    "On form submission": [
+      {
+        "json": {
+          "What is your question?": "what is rag",
+          "How many videos do you want to search?": 1,
+          "submittedAt": "2025-07-11T10:30:09.966-05:00",
+          "formMode": "test"
+        }
+      }
+    ]
+  },
+  "connections": {
+    "Execute Command": {
+      "main": [
+        [
+          {
+            "node": "Code",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code": {
+      "main": [
+        [
+          {
+            "node": "Split Out",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Split Out": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Loop Over Items": {
+      "main": [
+        [],
+        [
+          {
+            "node": "Execute Command1",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Create or update a record",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Execute Command1": {
+      "main": [
+        [
+          {
+            "node": "Code1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code1": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 1
+          },
+          {
+            "node": "Pinecone Vector Store",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "On form submission": {
+      "main": [
+        [
+          {
+            "node": "Execute Command",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Create or update a record": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Update record1": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Merge": {
+      "main": [
+        [
+          {
+            "node": "Update record1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Default Data Loader1": {
+      "ai_document": [
+        [
+          {
+            "node": "Pinecone Vector Store",
+            "type": "ai_document",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Embeddings Ollama": {
+      "ai_embedding": [
+        [
+          {
+            "node": "Pinecone Vector Store",
+            "type": "ai_embedding",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "5dbbf870-c269-4e07-b9b6-276b5e88bc28",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "83e7f7151a14000d53144da73cc769d7afe3352d34cc8c2c0c8f7143386865e7"
+  },
+  "id": "xgf5EnjJusETdwOs",
+  "tags": []
+}
