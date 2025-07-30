@@ -181,7 +181,7 @@ docker-compose ps
 
 #### n8n Credentials
 - **Pinecone**: API key and environment
-- **Ollama**: Local endpoint (typically `http://(your laptop's IP):11434` for Docker)
+- **Ollama**: Local endpoint (http://(your laptop's IP):11434` for running locally)
 
 ## Usage Example
 
