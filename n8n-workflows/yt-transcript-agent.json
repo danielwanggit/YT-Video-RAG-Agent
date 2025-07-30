@@ -117,269 +117,6 @@
     },
     {
       "parameters": {
-        "operation": "upsert",
-        "base": {
-          "__rl": true,
-          "value": "appur5SluArh15fxs",
-          "mode": "list",
-          "cachedResultName": "yt-db",
-          "cachedResultUrl": "https://airtable.com/appur5SluArh15fxs"
-        },
-        "table": {
-          "__rl": true,
-          "value": "tblXLSh1lS0ZtlVwP",
-          "mode": "list",
-          "cachedResultName": "Youtube Videos",
-          "cachedResultUrl": "https://airtable.com/appur5SluArh15fxs/tblXLSh1lS0ZtlVwP"
-        },
-        "columns": {
-          "mappingMode": "defineBelow",
-          "value": {
-            "Video Name": "={{ $json.title }}",
-            "Uploader": "={{ $json.uploader }}",
-            "Video URL": "={{ $json.url }}"
-          },
-          "matchingColumns": [
-            "Video Name"
-          ],
-          "schema": [
-            {
-              "id": "id",
-              "displayName": "id",
-              "required": false,
-              "defaultMatch": true,
-              "display": true,
-              "type": "string",
-              "readOnly": true,
-              "removed": true
-            },
-            {
-              "id": "Video Name",
-              "displayName": "Video Name",
-              "required": false,
-              "defaultMatch": false,
-              "canBeUsedToMatch": true,
-              "display": true,
-              "type": "string",
-              "readOnly": false,
-              "removed": false
-            },
-            {
-              "id": "transcript",
-              "displayName": "transcript",
-              "required": false,
-              "defaultMatch": false,
-              "canBeUsedToMatch": true,
-              "display": true,
-              "type": "string",
-              "readOnly": false,
-              "removed": true
-            },
-            {
-              "id": "Video URL",
-              "displayName": "Video URL",
-              "required": false,
-              "defaultMatch": false,
-              "canBeUsedToMatch": true,
-              "display": true,
-              "type": "string",
-              "readOnly": false,
-              "removed": false
-            },
-            {
-              "id": "Uploader",
-              "displayName": "Uploader",
-              "required": false,
-              "defaultMatch": false,
-              "canBeUsedToMatch": true,
-              "display": true,
-              "type": "string",
-              "readOnly": false,
-              "removed": false
-            },
-            {
-              "id": "Stage",
-              "displayName": "Stage",
-              "required": false,
-              "defaultMatch": false,
-              "canBeUsedToMatch": true,
-              "display": true,
-              "type": "options",
-              "options": [
-                {
-                  "name": "Transcript Complete",
-                  "value": "Transcript Complete"
-                },
-                {
-                  "name": "Vectorized",
-                  "value": "Vectorized"
-                }
-              ],
-              "readOnly": false,
-              "removed": true
-            }
-          ],
-          "attemptToConvertTypes": false,
-          "convertFieldsToString": false
-        },
-        "options": {}
-      },
-      "type": "n8n-nodes-base.airtable",
-      "typeVersion": 2.1,
-      "position": [
-        1376,
-        -352
-      ],
-      "id": "0e6c5a68-909c-4e0e-bc29-fd23ef459c54",
-      "name": "Create or update a record",
-      "credentials": {
-        "airtableTokenApi": {
-          "id": "yzFufZcDnygd3Sv5",
-          "name": "Airtable Personal Access Token account"
-        }
-      }
-    },
-    {
-      "parameters": {
-        "operation": "update",
-        "base": {
-          "__rl": true,
-          "value": "appur5SluArh15fxs",
-          "mode": "list",
-          "cachedResultName": "yt-db",
-          "cachedResultUrl": "https://airtable.com/appur5SluArh15fxs"
-        },
-        "table": {
-          "__rl": true,
-          "value": "tblXLSh1lS0ZtlVwP",
-          "mode": "list",
-          "cachedResultName": "Youtube Videos",
-          "cachedResultUrl": "https://airtable.com/appur5SluArh15fxs/tblXLSh1lS0ZtlVwP"
-        },
-        "columns": {
-          "mappingMode": "defineBelow",
-          "value": {
-            "Video URL": "={{ $json.fields['Video URL'] }}",
-            "transcript": "={{ $json.transcript }}",
-            "Stage": "Transcript Complete"
-          },
-          "matchingColumns": [
-            "Video URL"
-          ],
-          "schema": [
-            {
-              "id": "id",
-              "displayName": "id",
-              "required": false,
-              "defaultMatch": true,
-              "display": true,
-              "type": "string",
-              "readOnly": true,
-              "removed": true
-            },
-            {
-              "id": "Video Name",
-              "displayName": "Video Name",
-              "required": false,
-              "defaultMatch": false,
-              "canBeUsedToMatch": true,
-              "display": true,
-              "type": "string",
-              "readOnly": false,
-              "removed": true
-            },
-            {
-              "id": "transcript",
-              "displayName": "transcript",
-              "required": false,
-              "defaultMatch": false,
-              "canBeUsedToMatch": true,
-              "display": true,
-              "type": "string",
-              "readOnly": false,
-              "removed": false
-            },
-            {
-              "id": "Video URL",
-              "displayName": "Video URL",
-              "required": false,
-              "defaultMatch": false,
-              "canBeUsedToMatch": true,
-              "display": true,
-              "type": "string",
-              "readOnly": false,
-              "removed": false
-            },
-            {
-              "id": "Uploader",
-              "displayName": "Uploader",
-              "required": false,
-              "defaultMatch": false,
-              "canBeUsedToMatch": true,
-              "display": true,
-              "type": "string",
-              "readOnly": false,
-              "removed": true
-            },
-            {
-              "id": "Stage",
-              "displayName": "Stage",
-              "required": false,
-              "defaultMatch": false,
-              "canBeUsedToMatch": true,
-              "display": true,
-              "type": "options",
-              "options": [
-                {
-                  "name": "Transcript Complete",
-                  "value": "Transcript Complete"
-                },
-                {
-                  "name": "Vectorized",
-                  "value": "Vectorized"
-                }
-              ],
-              "readOnly": false,
-              "removed": false
-            }
-          ],
-          "attemptToConvertTypes": false,
-          "convertFieldsToString": false
-        },
-        "options": {}
-      },
-      "type": "n8n-nodes-base.airtable",
-      "typeVersion": 2.1,
-      "position": [
-        1888,
-        -208
-      ],
-      "id": "aac4dee1-a947-4880-8b4a-c2dbfd2395e7",
-      "name": "Update record1",
-      "credentials": {
-        "airtableTokenApi": {
-          "id": "yzFufZcDnygd3Sv5",
-          "name": "Airtable Personal Access Token account"
-        }
-      }
-    },
-    {
-      "parameters": {
-        "mode": "combine",
-        "combineBy": "combineByPosition",
-        "options": {}
-      },
-      "type": "n8n-nodes-base.merge",
-      "typeVersion": 3.2,
-      "position": [
-        1600,
-        -240
-      ],
-      "id": "da4727be-bccc-4741-9b9a-8d14bfad34b6",
-      "name": "Merge"
-    },
-    {
-      "parameters": {
         "content": "## Step 1\nForm: submit question and # of vids to search\n",
         "height": 320,
         "width": 192
@@ -410,47 +147,23 @@
     },
     {
       "parameters": {
-        "resource": "base",
-        "operation": "getSchema",
-        "base": {
-          "__rl": true,
-          "value": "appur5SluArh15fxs",
-          "mode": "list",
-          "cachedResultName": "yt-db",
-          "cachedResultUrl": "https://airtable.com/appur5SluArh15fxs"
-        }
-      },
-      "type": "n8n-nodes-base.airtable",
-      "typeVersion": 2.1,
-      "position": [
-        640,
-        272
-      ],
-      "id": "d7690aab-9b60-4272-a360-ebdd8fb192d7",
-      "name": "Get base schema",
-      "credentials": {
-        "airtableTokenApi": {
-          "id": "yzFufZcDnygd3Sv5",
-          "name": "Airtable Personal Access Token account"
-        }
-      }
-    },
-    {
-      "parameters": {
         "mode": "insert",
         "pineconeIndex": {
           "__rl": true,
-          "value": "yt-db",
+          "value": "pinecone-yt-db",
           "mode": "list",
-          "cachedResultName": "yt-db"
+          "cachedResultName": "pinecone-yt-db"
         },
-        "options": {}
+        "embeddingBatchSize": 1500,
+        "options": {
+          "pineconeNamespace": ""
+        }
       },
       "type": "@n8n/n8n-nodes-langchain.vectorStorePinecone",
       "typeVersion": 1.3,
       "position": [
-        1712,
-        128
+        1616,
+        -176
       ],
       "id": "13632672-a5a1-4a80-a93a-4fec2a3c0a9c",
       "name": "Pinecone Vector Store",
@@ -470,36 +183,107 @@
       "type": "@n8n/n8n-nodes-langchain.documentDefaultDataLoader",
       "typeVersion": 1.1,
       "position": [
-        1888,
-        352
+        1648,
+        96
       ],
       "id": "a89d4506-5e35-46f9-a635-5dd59a5bb406",
       "name": "Default Data Loader1"
     },
     {
-      "parameters": {},
+      "parameters": {
+        "model": "nomic-embed-text:latest"
+      },
       "type": "@n8n/n8n-nodes-langchain.embeddingsOllama",
       "typeVersion": 1,
       "position": [
-        1600,
-        320
+        2000,
+        64
       ],
       "id": "8d56f0ec-ea94-4ebb-aaa0-bd9c3bb19b2f",
-      "name": "Embeddings Ollama"
-    }
-  ],
-  "pinData": {
-    "On form submission": [
-      {
-        "json": {
-          "What is your question?": "what is rag",
-          "How many videos do you want to search?": 1,
-          "submittedAt": "2025-07-11T10:30:09.966-05:00",
-          "formMode": "test"
+      "name": "Embeddings Ollama",
+      "credentials": {
+        "ollamaApi": {
+          "id": "L2ZDXvCYhNusgonb",
+          "name": "Ollama account"
         }
       }
-    ]
-  },
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2.1,
+      "position": [
+        2384,
+        -384
+      ],
+      "id": "12829d98-3b10-4c06-b2fc-3d1b70b92b63",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "mode": "retrieve-as-tool",
+        "toolDescription": "Use only this knowledge base to answer questions from the user",
+        "pineconeIndex": {
+          "__rl": true,
+          "value": "pinecone-yt-db",
+          "mode": "list",
+          "cachedResultName": "pinecone-yt-db"
+        },
+        "includeDocumentMetadata": false,
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.vectorStorePinecone",
+      "typeVersion": 1.3,
+      "position": [
+        2416,
+        -48
+      ],
+      "id": "7f4dcefc-1ce3-4bc3-942e-57c7baa36c68",
+      "name": "Pinecone Vector Store1",
+      "credentials": {
+        "pineconeApi": {
+          "id": "NiamWEHoAZazPkYN",
+          "name": "PineconeApi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chatTrigger",
+      "typeVersion": 1.1,
+      "position": [
+        2208,
+        -384
+      ],
+      "id": "634f4d2b-6bfc-4b94-9ea1-2c4849185824",
+      "name": "When chat message received",
+      "webhookId": "6361e32f-f2f7-47be-bee0-c2b09501d5ad"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        2256,
+        -176
+      ],
+      "id": "1ee3be51-2b42-489d-8f7c-810978ff32fc",
+      "name": "Google Gemini Chat Model",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "8QTK2V4MF9ci8xEv",
+          "name": "Google Gemini(PaLM) Api account"
+        }
+      }
+    }
+  ],
+  "pinData": {},
   "connections": {
     "Execute Command": {
       "main": [
@@ -542,11 +326,6 @@
             "node": "Execute Command1",
             "type": "main",
             "index": 0
-          },
-          {
-            "node": "Create or update a record",
-            "type": "main",
-            "index": 0
           }
         ]
       ]
@@ -566,11 +345,6 @@
       "main": [
         [
           {
-            "node": "Merge",
-            "type": "main",
-            "index": 1
-          },
-          {
             "node": "Pinecone Vector Store",
             "type": "main",
             "index": 0
@@ -583,39 +357,6 @@
         [
           {
             "node": "Execute Command",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Create or update a record": {
-      "main": [
-        [
-          {
-            "node": "Merge",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Update record1": {
-      "main": [
-        [
-          {
-            "node": "Loop Over Items",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Merge": {
-      "main": [
-        [
-          {
-            "node": "Update record1",
             "type": "main",
             "index": 0
           }
@@ -640,6 +381,55 @@
             "node": "Pinecone Vector Store",
             "type": "ai_embedding",
             "index": 0
+          },
+          {
+            "node": "Pinecone Vector Store1",
+            "type": "ai_embedding",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Pinecone Vector Store1": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "When chat message received": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Gemini Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Pinecone Vector Store": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
           }
         ]
       ]
@@ -649,7 +439,7 @@
   "settings": {
     "executionOrder": "v1"
   },
-  "versionId": "5dbbf870-c269-4e07-b9b6-276b5e88bc28",
+  "versionId": "9266a95d-b619-4f12-8fbd-acc4754661b8",
   "meta": {
     "templateCredsSetupCompleted": true,
     "instanceId": "83e7f7151a14000d53144da73cc769d7afe3352d34cc8c2c0c8f7143386865e7"

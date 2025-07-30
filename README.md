@@ -31,13 +31,85 @@ This project solves the challenge of extracting and querying knowledge from YouT
 4. **Vector Storage**: Pinecone integration for semantic search capabilities
 5. **RAG Agent**: Question-answering using retrieved context and Ollama LLM
 
-## Installation Instructions
+## Quick Start - Local Testing
 
 ### Prerequisites
 - Docker and Docker Compose installed
 - Ollama installed and running locally
 - Pinecone account and API key
-- (Optional) Airtable account for metadata tracking
+
+### Step 1: Clone and Setup
+
+```bash
+# Clone the repository
+git clone https://github.com/danielwanggit/YT-Video-RAG-Agent.git
+cd n8n-docker-compose
+
+# Create environment file
+cat > .env << EOF
+DOMAIN_NAME=localhost
+GENERIC_TIMEZONE=UTC
+EOF
+```
+
+### Step 2: Install and Setup Ollama
+
+```bash
+# Install Ollama (if not already installed)
+curl -fsSL https://ollama.ai/install.sh | sh
+
+# Start Ollama service
+ollama serve
+
+# In a new terminal, pull required models
+ollama pull nomic-embed-text
+ollama pull llama3.2
+
+# Verify installation
+ollama list
+```
+
+### Step 3: Setup Pinecone
+
+1. Go to [Pinecone Console](https://app.pinecone.io/)
+2. Create a new index:
+   - **Name**: `yt-db`
+   - **Dimensions**: `768` (for nomic-embed-text)
+   - **Metric**: `cosine`
+3. Copy your API key and environment
+
+### Step 4: Build and Start Services
+
+```bash
+# Build the custom n8n image
+make build
+
+# Start the services
+docker-compose up -d
+
+# Check if services are running
+docker-compose ps
+```
+
+### Step 5: Configure n8n
+
+1. **Access n8n**: Open http://localhost:5678 in your browser(Do not use Safari)
+2. **Create account**: Set up your n8n admin account
+3. **Import workflow**: 
+   - Go to Workflows → Import from file
+   - Select `n8n-workflows/yt-transcript-agent.json`
+4. **Configure credentials**:
+   - **Pinecone**: Add your API key and environment
+   - **Ollama**: Set endpoint to `http://host.docker.internal:11434`
+
+### Step 6: Test the Workflow
+
+1. **Activate the workflow** in n8n
+2. **Access the web form**: The workflow will provide a webhook URL
+3. **Test with a question**: Try "What is machine learning?"
+4. **Check results**: Monitor the workflow execution in n8n
+
+## Detailed Installation Instructions
 
 ### Ollama Setup
 
@@ -78,19 +150,18 @@ This project solves the challenge of extracting and querying knowledge from YouT
 2. **Configure Environment Variables**:
    Create a `.env` file with:
    ```env
-   DOMAIN_NAME=your-domain.com
+   DOMAIN_NAME=localhost
    GENERIC_TIMEZONE=UTC
    ```
 
 3. **Set Up Credentials in n8n**:
    - Pinecone API credentials
-   - (Optional) Airtable API credentials
    - Configure Ollama connection settings
 
 4. **Build and Start Services**:
    ```bash
    # Build custom n8n image
-   docker build -t n8n-python:1.102.1-7 custom-n8n-image/
+   make build
    
    # Start services
    docker-compose up -d
@@ -110,14 +181,9 @@ This project solves the challenge of extracting and querying knowledge from YouT
 
 #### n8n Credentials
 - **Pinecone**: API key and environment
-- **Ollama**: Local endpoint (typically `http://localhost:11434`)
-- **Airtable** (optional): Personal access token
+- **Ollama**: Local endpoint (typically `http://(your laptop's IP):11434` for Docker)
 
-## Demo Video
-
-[Demo video link to be added]
-
-### Usage Example
+## Usage Example
 
 1. **Access the Web Form**: Navigate to the n8n webhook URL
 2. **Enter Your Question**: Type a question about any topic
@@ -145,24 +211,5 @@ n8n-docker-compose/
 ├── n8n_data/               # n8n persistent data
 ├── docker-compose.yaml     # Service orchestration
 ├── Makefile               # Build and deployment commands
-└── README                 # This file
+└── README.md              # This file
 ```
-
-## Contributing
-
-1. Fork the repository
-2. Create a feature branch
-3. Make your changes
-4. Test thoroughly
-5. Submit a pull request
-
-## License
-
-[Add your license information here]
-
-## Support
-
-For issues and questions:
-- Create an issue in the GitHub repository
-- Check the n8n documentation for workflow-specific questions
-- Refer to Ollama documentation for model-related issues
