@@ -2,14 +2,13 @@
 
 ## Problem Description
 
-This project solves the challenge of extracting and querying knowledge from YouTube videos efficiently. Traditional video consumption requires watching entire videos to find specific information, which is time-consuming and inefficient. This solution creates a searchable knowledge base from YouTube video transcripts, enabling users to ask questions and get precise answers based on the video content.
+This project solves the challenge of extracting knowledge from YouTube videos efficiently. Traditional video consumption requires watching entire videos to find information, which is time-consuming and inefficient. This n8n workflow creates a searchable knowledge base from YouTube video transcripts, enabling users to ask questions and get answers based on the video content.
 
 **Key Features:**
 - Automated YouTube video search and transcript extraction
 - Vector database storage using Pinecone for semantic search
 - RAG (Retrieval-Augmented Generation) agent powered by self-hosted Ollama
-- Web-based interface for easy interaction
-- Persistent storage of video metadata and transcripts
+
 
 ## Technology Stack
 
@@ -37,6 +36,7 @@ This project solves the challenge of extracting and querying knowledge from YouT
 - Docker and Docker Compose installed
 - Ollama installed and running locally
 - Pinecone account and API key
+- Google account and API key(I use gemini as the agent chat model)
 
 ### Step 1: Clone and Setup
 
